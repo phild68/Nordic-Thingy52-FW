@@ -1,3 +1,5 @@
-GNU_INSTALL_ROOT := /usr/local/gcc-arm-none-eabi-4_9-2015q3
-GNU_VERSION := 4.9.3
+#GNU_INSTALL_ROOT := /usr/local/gcc-arm-none-eabi-4_9-2015q3
+#GNU_VERSION := 4.9.3
+GNU_INSTALL_ROOT := /opt/tools/arm-gnu-toolchain/gcc-arm-none-eabi-7-2017-q4-major
+GNU_VERSION := 7.2.1
 GNU_PREFIX := arm-none-eabi
