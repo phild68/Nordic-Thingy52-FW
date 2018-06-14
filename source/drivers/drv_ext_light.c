@@ -854,6 +854,16 @@ ret_code_t drv_ext_light_off(uint32_t id)
     sequence.sequence_vals.on_intensity = DRV_EXT_LIGHT_INTENSITY_OFF;
     sequence.color = DRV_EXT_LIGHT_COLOR_WHITE;
 
+#define DRV_EXT_LIGHT_OFF_ROUND_WORKAROUND
+#ifdef DRV_EXT_LIGHT_OFF_ROUND_WORKAROUND
+    sequence.sequence_vals.fade_in_time_ms = 900;
+    sequence.sequence_vals.on_time_ms = 100;
+    sequence.sequence_vals.fade_out_time_ms = 900;
+    sequence.sequence_vals.off_time_ms = 100;
+    sequence.sequence_vals.on_intensity = 0xff;
+    sequence.sequence_vals.off_intensity = 100;
+#endif
+
     err_code = m_ioext_cmd_process(id, &sequence);
     RETURN_IF_ERROR(err_code);
 
