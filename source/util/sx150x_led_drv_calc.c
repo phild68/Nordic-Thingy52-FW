@@ -230,17 +230,19 @@ static uint32_t optimal_time_settings_risefall_calculate(drv_ext_light_sequence_
 {
     uint32_t inaccurate_results_num = 0;
     /* Fade in */
-    uint32_t fade_in_time_low_mult_reg  = (uint32_t) round(
-                                          (real_val->fade_in_time_ms /
-                                          (REG_RISEFALL_TIME_LOW_MULTIPLIER *
-                                          (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
-                                          (255 / m_clkx_tics_pr_sec))) / 1000);
+    uint32_t fade_in_time_low_mult_reg  = real_val->fade_in_time_ms ? (uint32_t) round(
+                                                                                          (real_val->fade_in_time_ms /
+                                                                                          (REG_RISEFALL_TIME_LOW_MULTIPLIER *
+                                                                                          (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
+                                                                                          (255 / m_clkx_tics_pr_sec))) / 1000) 
+                                                                    : 0;
 
-    uint32_t fade_in_time_high_mult_reg = (uint32_t) round(
-                                          (real_val->fade_in_time_ms /
-                                          (REG_RISEFALL_TIME_HIGH_MULTIPLIER *
-                                          (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
-                                          (255 / m_clkx_tics_pr_sec))) / 1000);
+    uint32_t fade_in_time_high_mult_reg = real_val->fade_in_time_ms ? (uint32_t) round(
+                                                                                          (real_val->fade_in_time_ms /
+                                                                                          (REG_RISEFALL_TIME_HIGH_MULTIPLIER *
+                                                                                          (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
+                                                                                          (255 / m_clkx_tics_pr_sec))) / 1000)
+                                                                    : 10;
 
     if (fade_in_time_low_mult_reg  > REG_LOW_MAXVAL)
     {
@@ -287,15 +289,17 @@ static uint32_t optimal_time_settings_risefall_calculate(drv_ext_light_sequence_
 
     /* Fade out. */
 
-    uint32_t fade_out_time_low_mult_reg  = (uint32_t) round((real_val->fade_out_time_ms /
-                                           (REG_RISEFALL_TIME_LOW_MULTIPLIER *
-                                           (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
-                                           (255 / m_clkx_tics_pr_sec))) / 1000);
+    uint32_t fade_out_time_low_mult_reg  = real_val->fade_out_time_ms ? (uint32_t) round((real_val->fade_out_time_ms /
+                                                                                         (REG_RISEFALL_TIME_LOW_MULTIPLIER *
+                                                                                         (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
+                                                                                         (255 / m_clkx_tics_pr_sec))) / 1000)
+                                                                      : 0;
 
-    uint32_t fade_out_time_high_mult_reg = (uint32_t) round((real_val->fade_out_time_ms /
-                                           (REG_RISEFALL_TIME_HIGH_MULTIPLIER *
-                                           (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
-                                           (255 / m_clkx_tics_pr_sec))) / 1000);
+    uint32_t fade_out_time_high_mult_reg = real_val->fade_out_time_ms ? (uint32_t) round((real_val->fade_out_time_ms /
+                                                                                         (REG_RISEFALL_TIME_HIGH_MULTIPLIER *
+                                                                                         (reg_val->on_intensity - (4 * reg_val->off_intensity)) *
+                                                                                         (255 / m_clkx_tics_pr_sec))) / 1000)
+                                                                      : 0;
 
     if (fade_out_time_low_mult_reg  > REG_LOW_MAXVAL )
     {
