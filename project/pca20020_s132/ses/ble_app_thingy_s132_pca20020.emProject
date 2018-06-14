@@ -21,6 +21,7 @@
       <file file_name="../../../external/sdk13/components/toolchain/embedded_studio/ses_nrf52_startup.s" />
       <file file_name="../../../external/sdk13/components/toolchain/system_nrf52.c" />
       <file file_name="../../../external/sdk13/components/toolchain/embedded_studio/thumb_crt0.s" />
+      <file file_name="../config/sdk_config.h" />
     </folder>
     <configuration
       Name="release_v1_0_0"
@@ -40,7 +41,6 @@
       <file file_name="../../../source/util/advertiser_beacon_timeslot.c" />
       <file file_name="../../../source/util/twi_manager.c" />
       <file file_name="../../../source/modules/m_batt_meas.c" />
-      <file file_name="../config/sdk_config.h" />
       <file file_name="../../../include/board/pca20020.h" />
       <file file_name="../../../source/util/support_func.c" />
       <file file_name="../config/thingy_config.h" />
