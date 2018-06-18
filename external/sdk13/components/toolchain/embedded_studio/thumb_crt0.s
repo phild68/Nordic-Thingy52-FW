@@ -1,13 +1,45 @@
-// SEGGER Embedded Studio, runtime support.
-//
-// Copyright (c) 2014-2018 SEGGER Microcontroller GmbH & Co KG
-// Copyright (c) 2001-2018 Rowley Associates Limited.
-//
-// This file may be distributed under the terms of the License Agreement
-// provided with this software.
-//
-// THIS FILE IS PROVIDED AS IS WITH NO WARRANTY OF ANY KIND, INCLUDING THE
-// WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// **********************************************************************
+// *                    SEGGER Microcontroller GmbH                     *
+// *                        The Embedded Experts                        *
+// **********************************************************************
+// *                                                                    *
+// *            (c) 2014 - 2018 SEGGER Microcontroller GmbH             *
+// *            (c) 2001 - 2018 Rowley Associates Limited               *
+// *                                                                    *
+// *           www.segger.com     Support: support@segger.com           *
+// *                                                                    *
+// **********************************************************************
+// *                                                                    *
+// * All rights reserved.                                               *
+// *                                                                    *
+// * Redistribution and use in source and binary forms, with or         *
+// * without modification, are permitted provided that the following    *
+// * conditions are met:                                                *
+// *                                                                    *
+// * - Redistributions of source code must retain the above copyright   *
+// *   notice, this list of conditions and the following disclaimer.    *
+// *                                                                    *
+// * - Neither the name of SEGGER Microcontroller GmbH                  *
+// *   nor the names of its contributors may be used to endorse or      *
+// *   promote products derived from this software without specific     *
+// *   prior written permission.                                        *
+// *                                                                    *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND             *
+// * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,        *
+// * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF           *
+// * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE           *
+// * DISCLAIMED.                                                        *
+// * IN NO EVENT SHALL SEGGER Microcontroller GmbH BE LIABLE FOR        *
+// * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR           *
+// * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT  *
+// * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;    *
+// * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF      *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT          *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE  *
+// * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH   *
+// * DAMAGE.                                                            *
+// *                                                                    *
+// **********************************************************************
 //
 //
 //                           Preprocessor Definitions
@@ -69,7 +101,7 @@
 
   .section .init, "ax"
   .code 16
-  .align 2
+  .balign 2
   .thumb_func
 
 _start:
@@ -138,8 +170,8 @@ _start:
   ldr r2, =__tdata_end__
   bl memory_copy
   ldr r0, =__fs_data_load_start__
-  ldr r1, =__start_fs_data
-  ldr r2, =__stop_fs_data
+  ldr r1, =__fs_data_start__
+  ldr r2, =__fs_data_end__
   bl memory_copy
 #ifdef INITIALIZE_SECONDARY_SECTIONS
   ldr r0, =__data2_load_start__
@@ -307,6 +339,7 @@ memory_set:
 
 .macro HELPER helper_name
   .section .text.\helper_name, "ax", %progbits
+  .balign 2
   .global \helper_name
   .weak \helper_name  
 \helper_name:
@@ -328,50 +361,12 @@ memory_set:
 HELPER __aeabi_read_tp
   ldr r0, =__tbss_start__-8
   bx lr
-HELPER __heap_lock
-  bx lr
-HELPER __heap_unlock
-  bx lr
-HELPER __printf_lock
-  bx lr
-HELPER __printf_unlock
-  bx lr
-HELPER __scanf_lock
-  bx lr
-HELPER __scanf_unlock
-  bx lr
-HELPER __debug_io_lock
-  bx lr
-HELPER __debug_io_unlock
-  bx lr
 HELPER abort
   b .
 HELPER __assert
   b .
 HELPER __aeabi_assert
   b .
-HELPER __cxa_pure_virtual
-  b .
-HELPER __cxa_guard_acquire
-  ldr r3, [r0]
-#if defined(__thumb__) && !defined(__thumb2__)
-  movs r0, #1
-  tst r3, r0
-#else
-  tst r3, #1
-#endif
-  beq 1f
-  movs r0, #0
-  bx lr
-1:
-  movs r0, #1
-  bx lr
-HELPER __cxa_guard_release
-  movs r3, #1
-  str r3, [r0]
-  bx lr
-HELPER __cxa_guard_abort
-  bx lr
 HELPER __sync_synchronize
   bx lr
 HELPER __getchar
